@@ -9,5 +9,5 @@ public interface UserServiceInterface {
 
     User findById(Long id) throws ApiWoloxException;
 
-    List<User> findAll();
+    List<User> findAll() throws ApiWoloxException;
 }

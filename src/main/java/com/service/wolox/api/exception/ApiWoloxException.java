@@ -1,7 +1,7 @@
 package com.service.wolox.api.exception;
 
 
-import com.service.wolox.api.enums.ErrorMessageEnum;
+import com.service.wolox.api.enums.ErrorEnumInterface;
 import org.springframework.http.HttpStatus;
 
 public class ApiWoloxException extends Exception{
@@ -15,7 +15,7 @@ public class ApiWoloxException extends Exception{
         this.source = source;
     }
 
-    public ApiWoloxException(ErrorMessageEnum error, HttpStatus status, String source){
+    public ApiWoloxException(ErrorEnumInterface error, HttpStatus status, String source){
         super(error.getMessage());
         this.status = status;
         this.source = source;

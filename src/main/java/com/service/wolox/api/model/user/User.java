@@ -1,10 +1,15 @@
 package com.service.wolox.api.model.user;
 
-import lombok.Data;
+import lombok.*;
+
+import java.io.Serializable;
 
 
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Data
-public class User{
+@Builder
+public class User implements Serializable {
 
     private Long id;
 

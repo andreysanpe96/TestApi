@@ -4,7 +4,10 @@ import lombok.*;
 
 import java.io.Serializable;
 
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Data
+@Builder
 public class Address implements Serializable {
 
     private String street;

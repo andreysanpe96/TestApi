@@ -1,6 +1,6 @@
 package com.service.wolox.api.utils;
 
-import com.service.wolox.api.enums.ErrorMessageEnum;
+import com.service.wolox.api.enums.ErrorEnumInterface;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +13,7 @@ public class Utils {
         return dtf.format(now);
     }
 
-    public static String createErrorMessageWithId(ErrorMessageEnum errorMessageEnum, long id){
-        return String.format(errorMessageEnum.getMessage(), id);
+    public static String createErrorMessageWithId(ErrorEnumInterface userErrorEnum, long id){
+        return String.format(userErrorEnum.getMessage(), id);
     }
 }

@@ -8,7 +8,11 @@ spring.datasource.driver-class-name: org.h2.Driver
 spring.jpa.hibernate.ddl-auto: create
 
 #Api URL
-wolox.api.url: http://localhost:8080
+wolox.api.url: https://jsonplaceholder.typicode.com
 
 #Paths
 user.path.service: "/users"
+photo.path.service: "/photos"
+comment.path.service: "/comments"
+album.path.service: "/albums"
+album.permission.path.service: "/albumsPermission"
