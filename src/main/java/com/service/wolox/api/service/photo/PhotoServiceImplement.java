@@ -41,15 +41,15 @@ public class PhotoServiceImplement implements PhotoServiceInterface {
         try {
             Optional<Photo> photo = Optional.ofNullable(apiRestTemplate.getForObject(constant.pathPhoto + "/" + photoId, Photo.class));
             return photo.orElseThrow(() ->
-                    new ApiWoloxException(Utils.createErrorMessageWithId(PhotoErrorEnum.PHOTO_NOT_FOUND, photoId),
+                    new ApiWoloxException(Utils.createErrorMessageWithValue(PhotoErrorEnum.PHOTO_NOT_FOUND, photoId),
                             HttpStatus.NOT_FOUND, constant.pathPhoto)
             );
         } catch (HttpClientErrorException.NotFound e) {
-            String message = Utils.createErrorMessageWithId(PhotoErrorEnum.PHOTO_NOT_FOUND, photoId);
+            String message = Utils.createErrorMessageWithValue(PhotoErrorEnum.PHOTO_NOT_FOUND, photoId);
             logger.error(message);
             throw new ApiWoloxException(message, HttpStatus.NOT_FOUND, constant.pathPhoto);
         } catch (HttpClientErrorException e) {
-            String message = Utils.createErrorMessageWithId(PhotoErrorEnum.ERROR_FINDING_PHOTO, photoId);
+            String message = Utils.createErrorMessageWithValue(PhotoErrorEnum.ERROR_FINDING_PHOTO, photoId);
             logger.error(message);
             throw new ApiWoloxException(message, HttpStatus.SERVICE_UNAVAILABLE, constant.pathPhoto);
         }
@@ -59,9 +59,9 @@ public class PhotoServiceImplement implements PhotoServiceInterface {
     public List<Photo> findAll() throws ApiWoloxException {
         try {
             Photo[] listPhoto = apiRestTemplate.getForObject(constant.pathPhoto, Photo[].class);
-            if(ArrayUtils.isEmpty(listPhoto)){
+            if (ArrayUtils.isEmpty(listPhoto)) {
                 throw new ApiWoloxException(PhotoErrorEnum.NOT_PHOTOS, HttpStatus.NOT_FOUND, constant.pathPhoto);
-            }else{
+            } else {
                 return Arrays.asList(listPhoto);
             }
         } catch (HttpClientErrorException.NotFound e) {
@@ -79,19 +79,20 @@ public class PhotoServiceImplement implements PhotoServiceInterface {
     public List<Photo> findByUserId(Long userId) throws ApiWoloxException {
         try {
             List<Album> listAlbum = albumService.findByUserId(userId);
-            List<Photo> listPhoto = listAlbum.stream().flatMap(
-                    album -> findByAlbumId(album.getId()).stream()).collect(Collectors.toList());
-            if(CollectionUtils.isEmpty(listPhoto)){
-                throw new ApiWoloxException(PhotoErrorEnum.NOT_PHOTOS, HttpStatus.NOT_FOUND, constant.pathPhoto);
-            }else {
+            List<Photo> listPhoto = listAlbum.stream().flatMap( album -> findByAlbumId(album.getId()).stream() )
+                                    .collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(listPhoto)) {
+                throw new ApiWoloxException(Utils.createErrorMessageWithValue(PhotoErrorEnum.PHOTO_BY_USER_NOT_FOUND, userId),
+                          HttpStatus.NOT_FOUND, constant.pathPhoto);
+            } else {
                 return listPhoto;
             }
         } catch (HttpClientErrorException.NotFound e) {
-            String message = Utils.createErrorMessageWithId(PhotoErrorEnum.PHOTO_BY_USER_NOT_FOUND, userId);
+            String message = Utils.createErrorMessageWithValue(PhotoErrorEnum.PHOTO_BY_USER_NOT_FOUND, userId);
             logger.error(message);
             throw new ApiWoloxException(message, HttpStatus.NOT_FOUND, constant.pathPhoto);
         } catch (HttpClientErrorException e) {
-            String message = Utils.createErrorMessageWithId(PhotoErrorEnum.NOT_PHOTOS_BY_USER, userId);
+            String message = Utils.createErrorMessageWithValue(PhotoErrorEnum.NOT_PHOTOS_BY_USER, userId);
             logger.error(message);
             throw new ApiWoloxException(message, HttpStatus.SERVICE_UNAVAILABLE, constant.pathPhoto);
         }
@@ -101,9 +102,9 @@ public class PhotoServiceImplement implements PhotoServiceInterface {
     public List<Photo> findByAlbumId(Long albumId) {
         try {
             Photo[] photos = apiRestTemplate.getForObject(constant.pathPhoto + "?albumId=" + albumId, Photo[].class);
-            return ArrayUtils.isEmpty(photos) ? Arrays.asList(photos) : Collections.emptyList();
+            return !ArrayUtils.isEmpty(photos) ? Arrays.asList(photos) : Collections.emptyList();
         } catch (HttpClientErrorException e) {
-            String message = Utils.createErrorMessageWithId(PhotoErrorEnum.PHOTO_BY_ALBUM_NOT_FOUND, albumId);
+            String message = Utils.createErrorMessageWithValue(PhotoErrorEnum.PHOTO_BY_ALBUM_NOT_FOUND, albumId);
             logger.error(message);
             return new ArrayList<>();
         }

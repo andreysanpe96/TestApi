@@ -1,6 +1,5 @@
 package com.service.wolox.api.service.user;
 
-import com.service.wolox.api.enums.photo.PhotoErrorEnum;
 import com.service.wolox.api.enums.user.UserErrorEnum;
 import com.service.wolox.api.exception.ApiWoloxException;
 import com.service.wolox.api.model.user.User;
@@ -37,15 +36,15 @@ public class UserServiceImplement implements UserServiceInterface {
         try {
             Optional<User> user = Optional.ofNullable(apiRestTemplate.getForObject(constant.pathUser + "/" + id, User.class));
             return user.orElseThrow(() ->
-                    new ApiWoloxException(Utils.createErrorMessageWithId(UserErrorEnum.USER_NOT_FOUND, id),
+                    new ApiWoloxException(Utils.createErrorMessageWithValue(UserErrorEnum.USER_NOT_FOUND, id),
                             HttpStatus.NOT_FOUND, constant.pathUser)
             );
         } catch (HttpClientErrorException.NotFound e) {
-            String message = Utils.createErrorMessageWithId(UserErrorEnum.USER_NOT_FOUND, id);
+            String message = Utils.createErrorMessageWithValue(UserErrorEnum.USER_NOT_FOUND, id);
             logger.error(message);
             throw new ApiWoloxException(message, HttpStatus.NOT_FOUND, constant.pathUser);
         } catch (HttpClientErrorException e) {
-            String message = Utils.createErrorMessageWithId(UserErrorEnum.ERROR_FINDING_USER, id);
+            String message = Utils.createErrorMessageWithValue(UserErrorEnum.ERROR_FINDING_USER, id);
             logger.error(message);
             throw new ApiWoloxException(message, HttpStatus.SERVICE_UNAVAILABLE, constant.pathUser);
         }

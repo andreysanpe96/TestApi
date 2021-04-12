@@ -11,5 +11,5 @@ public interface CommentServiceInterface {
 
     public Comment findById(Long id) throws ApiWoloxException;
 
-    public List<Comment> findByUserOrName(Long userId, String name);
+    public List<Comment> findByUserOrName(Long userId, String name) throws ApiWoloxException;
 }

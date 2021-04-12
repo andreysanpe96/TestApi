@@ -32,11 +32,10 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK).body(commentService.findAll());
     }
 
-    @Operation(summary = "Method to filter by name or userId")
+    @Operation(summary = "Method to filter comments by name or userId")
     @GetMapping("/filter")
-    public ResponseEntity<List<Comment>> filterComment(
-            @RequestParam(required = false) String name, @RequestParam(required = false) Long userId) {
-
+    public ResponseEntity<List<Comment>> filterComment(@RequestParam(required = false) String name, @RequestParam(required = false) Long userId)
+            throws ApiWoloxException {
         return ResponseEntity.status(HttpStatus.OK).body(commentService.findByUserOrName(userId, name));
     }
 }

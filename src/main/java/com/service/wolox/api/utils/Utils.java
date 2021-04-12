@@ -13,7 +13,7 @@ public class Utils {
         return dtf.format(now);
     }
 
-    public static String createErrorMessageWithId(ErrorEnumInterface userErrorEnum, long id){
+    public static String createErrorMessageWithValue(ErrorEnumInterface userErrorEnum, Object id){
         return String.format(userErrorEnum.getMessage(), id);
     }
 }

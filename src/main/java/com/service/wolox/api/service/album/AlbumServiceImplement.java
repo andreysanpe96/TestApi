@@ -1,7 +1,6 @@
 package com.service.wolox.api.service.album;
 
 import com.service.wolox.api.enums.album.AlbumErrorEnum;
-import com.service.wolox.api.enums.user.UserErrorEnum;
 import com.service.wolox.api.exception.ApiWoloxException;
 import com.service.wolox.api.model.album.Album;
 import com.service.wolox.api.utils.Constant;
@@ -24,6 +23,7 @@ public class AlbumServiceImplement implements AlbumServiceInterface {
     Logger logger = LoggerFactory.getLogger(AlbumServiceImplement.class);
 
     private final RestTemplate apiRestTemplate;
+
     private final Constant constant;
 
     public AlbumServiceImplement(RestTemplate apiRestTemplate, Constant constant) {
@@ -36,15 +36,15 @@ public class AlbumServiceImplement implements AlbumServiceInterface {
         try {
             Optional<Album> album = Optional.ofNullable(apiRestTemplate.getForObject(constant.pathAlbum + "/" + albumId, Album.class));
             return album.orElseThrow(() ->
-                    new ApiWoloxException(Utils.createErrorMessageWithId(AlbumErrorEnum.ALBUM_NOT_FOUND, albumId),
+                    new ApiWoloxException(Utils.createErrorMessageWithValue(AlbumErrorEnum.ALBUM_NOT_FOUND, albumId),
                             HttpStatus.NOT_FOUND, constant.pathAlbum)
             );
         } catch (HttpClientErrorException.NotFound e) {
-            String message = Utils.createErrorMessageWithId(AlbumErrorEnum.ALBUM_NOT_FOUND, albumId);
+            String message = Utils.createErrorMessageWithValue(AlbumErrorEnum.ALBUM_NOT_FOUND, albumId);
             logger.error(message);
             throw new ApiWoloxException(message, HttpStatus.NOT_FOUND, constant.pathAlbum);
         } catch (HttpClientErrorException e) {
-            String message = Utils.createErrorMessageWithId(AlbumErrorEnum.ERROR_FINDING_ALBUM, albumId);
+            String message = Utils.createErrorMessageWithValue(AlbumErrorEnum.ERROR_FINDING_ALBUM, albumId);
             logger.error(message);
             throw new ApiWoloxException(message, HttpStatus.SERVICE_UNAVAILABLE, constant.pathAlbum);
         }
@@ -75,17 +75,17 @@ public class AlbumServiceImplement implements AlbumServiceInterface {
         try {
             Album[] listAlbum = apiRestTemplate.getForObject(constant.pathAlbum + "?userId=" + userId, Album[].class);
             if (ArrayUtils.isEmpty(listAlbum)) {
-                throw new ApiWoloxException(Utils.createErrorMessageWithId(AlbumErrorEnum.ALBUM_BY_USER_NOT_FOUND, userId),
+                throw new ApiWoloxException(Utils.createErrorMessageWithValue(AlbumErrorEnum.ALBUM_BY_USER_NOT_FOUND, userId),
                         HttpStatus.NOT_FOUND, constant.pathAlbum);
             } else {
                 return Arrays.asList(listAlbum);
             }
         } catch (HttpClientErrorException.NotFound e) {
-            String message = Utils.createErrorMessageWithId(AlbumErrorEnum.ALBUM_BY_USER_NOT_FOUND, userId);
+            String message = Utils.createErrorMessageWithValue(AlbumErrorEnum.ALBUM_BY_USER_NOT_FOUND, userId);
             logger.error(message);
             throw new ApiWoloxException(message, HttpStatus.NOT_FOUND, constant.pathAlbum);
         } catch (HttpClientErrorException e) {
-            String message = Utils.createErrorMessageWithId(AlbumErrorEnum.ERROR_FINDING_ALBUM_BY_USER, userId);
+            String message = Utils.createErrorMessageWithValue(AlbumErrorEnum.ERROR_FINDING_ALBUM_BY_USER, userId);
             logger.error(message);
             throw new ApiWoloxException(message, HttpStatus.SERVICE_UNAVAILABLE, constant.pathAlbum);
         }
