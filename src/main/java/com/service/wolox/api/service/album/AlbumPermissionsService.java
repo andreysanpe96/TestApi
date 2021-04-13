@@ -41,6 +41,7 @@ public class AlbumPermissionsService implements AlbumPermissionServiceInterface{
             // Search user and album, if not exist this methods throws apiWoloxException
             userService.findById(albumPermissionsDTO.getUserId());
             albumService.findById(albumPermissionsDTO.getAlbumId());
+
             AlbumPermissionsEntity response = albumPermissionsRepository.save(convertToEntity(albumPermissionsDTO));
             return convertToDTO(response);
         }catch (DataIntegrityViolationException e){
