@@ -76,7 +76,7 @@ public class AlbumPermissionsService implements AlbumPermissionServiceInterface{
                 response = albumPermissionsRepository.findByAlbumIdAndWrite(albumId, true);
                 break;
             default:
-                throw new ApiWoloxException(AlbumPermissionsErrorEnum.ACTION_NOT_VALID,HttpStatus.NOT_FOUND,constant.pathAlbumPermission);
+                throw new ApiWoloxException(AlbumPermissionsErrorEnum.ACTION_NOT_VALID,HttpStatus.BAD_REQUEST,constant.pathAlbumPermission);
         }
         return response.orElseThrow(() -> new ApiWoloxException(AlbumPermissionsErrorEnum.NOT_FOUND, HttpStatus.NOT_FOUND, constant.pathAlbumPermission))
                 .stream().map(this::convertToDTO).collect(Collectors.toList());
